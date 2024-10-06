@@ -23,6 +23,7 @@ export default async function MyBooks() {
     }
 
     let askCity = false
+    // todo check user only, not user_books in cas no books bu adress filled
     if(!userBooks || userBooks?.length == 0 || !userBooks[0].user.city || !userBooks[0].user.street) {
       askCity = true
     }

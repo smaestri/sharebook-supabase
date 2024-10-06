@@ -134,6 +134,8 @@ const attachBookToUser = async (supabase: any, isbn: string, userId: any, state:
 
             })
         console.log('error when saving user_book ', error)
+    } else {
+console.log('book already exists')
     }
 }
 
@@ -180,7 +182,7 @@ export async function deleteBook(id: number) {
         .from("user_book")
         .select("*")
         .eq("id", id)
-        .eq("status", "PURCHASED");
+        .eq("status", BOOK_STATUS.PURCHASED);
 
     if (borrow && borrow.length > 0) {
         console.log('error book pending!!', borrow)

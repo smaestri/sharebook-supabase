@@ -21,7 +21,7 @@ export default function PurchaseClient({ sale, isPurchase, buyer }: { buyer: any
   }
 
   return (
-    <Link href={`/purchase?id=${sale.id}&isPurchase=${isPurchase}`}>
+    <>
       <div className="flex flex-col w-[300px] bg-slate-50 rounded-lg p-4">
         <div className="flex flex-col items-center">
           <div className="h-[150px]" title={sale.user_book.book.title}>
@@ -31,13 +31,18 @@ export default function PurchaseClient({ sale, isPurchase, buyer }: { buyer: any
               width={100}
               height={100}
             />
+
+            {/* <div>    
+              <Link href={`/list-books?userId=${isPurchase ? sale.user_book.user.user_id : buyer.user_id}`}>Voir tous les livres de {isPurchase ? `${sale.user_book.user.user_name}` : `Acheteur: ${buyer}`}</Link>
+            </div> */}
           </div>
-          <div className="h-[65px] mb-5 mt-2">
+
+          <div className="mb-3 mt-2">
             <p title={sale.user_book.book.title} className="line-clamp-3 font-sans italic">{sale.user_book.book.title}</p>
           </div>
-        </div>
-        <div>
-          {isPurchase ? `Vendu par ${sale.user_book.user.user_name}` : `Acheteur: ${buyer}`}
+          <div className="mb-3">    
+              <Link className="no-underline hover:underline" href={`/purchase?id=${sale.id}&isPurchase=${isPurchase}`}>Messages avec {isPurchase ? sale.user_book.user.user_name : buyer.user_name}</Link>
+            </div>
         </div>
         <div>
           RDV le {new Date(sale.rdv_date).toLocaleDateString("fr-FR")} de {displayTime(sale.rdv_time)} {isPurchase ? `à ${sale.user_book.user.street} ${sale.user_book.user.city} ` : ""}
@@ -58,7 +63,7 @@ export default function PurchaseClient({ sale, isPurchase, buyer }: { buyer: any
         </div>
       </div>
       <ModalRefus isOpen={modalOpen} onClose={() => { setModalOpen(false) }} sale={sale} />
-    </Link>
+    </>
 
   )
 }

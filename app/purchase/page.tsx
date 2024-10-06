@@ -30,14 +30,13 @@ export default async function PurchasePage({searchParams}: any) {
   }
 
   //todo duplication with purchase-item
-  let buyerName
+  let buyer
   if(!isPurchase) {
-      const { data: buyer } = await supabase
+      const { data: buyers } = await supabase
       .from("user")
       .select("user_name")
       .eq("user_id", sales[0].borrower_id)
-
-      buyerName=buyer[0].user_name
+      buyer=buyers[0]
   }
 
   console.log('sales', sales[0].id)
@@ -47,13 +46,13 @@ export default async function PurchasePage({searchParams}: any) {
 
   console.log('isPurchase', isPurchase)
 
-  console.log('buyerName', buyerName)
+  console.log('buyerNbuyerame', buyer)
 
   return (
   <div>
     <div className="flex flex-row gap-3">
         <div>
-          <PurchaseClient sale={sales[0]} isPurchase={isPurchase} buyer={buyerName} />
+          <PurchaseClient sale={sales[0]} isPurchase={isPurchase} buyer={buyer} />
         </div>
         <div>
           <Messages messages={messages} borrowId={sales[0].id} isPurchase={isPurchase} />

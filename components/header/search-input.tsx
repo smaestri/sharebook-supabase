@@ -10,12 +10,12 @@ export default function SearchInput() {
         <Input
             name="term"
             classNames={{
-                base: "max-w-full sm:max-w-[10rem] h-10",
+                base: "max-w-full sm:max-w-[20rem] h-10",
                 mainWrapper: "h-full",
                 input: "text-small",
                 inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
             }}
-            placeholder="Type to search..."
+            placeholder="Chercher livre (titre, auteur, utilisateur, ...)"
             size="sm"
             startContent={<SearchIcon size={18} />}
             type="search"
