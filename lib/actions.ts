@@ -30,18 +30,19 @@ interface CreateBookFormState {
 //     return auth.signOut()
 // }
 
-const saveUser = async (supabase: any, userId: any, userName: string ) => {
-    console.log('saving user with id ', userId, " and name " + userName)
+const saveUser = async (supabase: any, email: string, pseudo: string ) => {
+    console.log('saving user with email ' + email)
     let { data: user } = await supabase
         .from("user")
-        .select("*").eq("user_id", userId);
+        .select("*")
+        .eq("email", email);
 
     if (user == null || user.length == 0) {
         const { error: userError } = await supabase
             .from('user')
             .insert({
-                user_id: userId,
-                user_name: userName
+                email,
+                pseudo
             })
         console.log('error when saving user ', userError)
     }
@@ -49,20 +50,26 @@ const saveUser = async (supabase: any, userId: any, userName: string ) => {
 
 export const saveCity = async (street: any, selectedCity: any, formState: any, formData: any) => {
 
-    console.log('save city with city ', selectedCity + " and cp " + formData.get('cp') + ' street', street)
+    console.log('save city with city ', selectedCity + " and cp " + formData.get('cp') + ' street', street + " pseudo " + formData.get('pseudo') )
+    console.log('')
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
+    console.log('user retrieved from oauth', (JSON.stringify(user)))
+    const email = user?.user_metadata["email"]
 
-    await saveUser(supabase, user?.id, user?.user_metadata["full_name"])
+    await saveUser(supabase, email, formData.get('pseudo') )
+
+console.log('saving city ...')
 
     const { error: errorCity } = await supabase
         .from('user')
         .update({
+            pseudo: formData.get('pseudo'),
             cp: formData.get('cp'),
             city: selectedCity,
             street,
         })
-        .eq('user_id', user?.id)
+        .eq('email', email)
 
     if (errorCity) {
         console.log('error when updating city / cp')
@@ -115,20 +122,20 @@ const saveBook = async (supabase: any, formData: any) => {
 
 }
 
-const attachBookToUser = async (supabase: any, isbn: string, userId: any, state: string | null, price: string | null) => {
+const attachBookToUser = async (supabase: any, isbn: string, email: string, state: string | null, price: string | null) => {
     let { data: bookWithCategory } = await supabase
         .from("user_book")
         .select("*")
-        .eq("user_id", userId)
+        .eq("email", email)
         .eq("deleted", false)
         .eq("book_isbn", isbn);
     if (!bookWithCategory || bookWithCategory.length == 0) {
-        console.log('user_book not found, inserting with isbn', isbn, " and userId " + userId, " and state " + state, " and price ", price)
+        console.log('user_book not found, inserting with isbn', isbn, " and email " + email, " and state " + state, " and price ", price)
         const { error } = await supabase
             .from('user_book')
             .insert({
                 book_isbn: isbn,
-                user_id: userId,
+                email,
                 state,
                 price,
 
@@ -147,11 +154,13 @@ export async function createBook(formState: CreateBookFormState, formData: FormD
     const { data: { user } } = await supabase.auth.getUser();
 
     console.log('user retrieved from oauth', (JSON.stringify(user)))
+    const email = user?.user_metadata["email"]
+    const pseudo = user?.user_metadata["full_name"]
 
     try {
-        await saveUser(supabase, user?.id, user?.user_metadata["full_name"])
+        await saveUser(supabase, email,pseudo)
         const book: BookWithCategory = await saveBook(supabase, formData)
-        await attachBookToUser(supabase, book.isbn, user?.id, formData.get('state') as string, formData.get('price'))
+        await attachBookToUser(supabase, book.isbn, email, formData.get('state') as string, formData.get('price'))
     } catch (err: unknown) {
         if (err instanceof Error) {
             return {
@@ -242,13 +251,14 @@ export async function refusePurchase(purchaseId: number, bookId: number, motif: 
     console.log('refusePurchase', purchaseId, " book=", bookId, " motif= ", motif, " slot= " + slot)
     const supabase = createClient();
     const { data: { user }, error: errConnect } = await supabase.auth.getUser()
+    const email = user?.user_metadata["email"]
 
     if (motif == "INCORRECT_SLOT") {
         const { error: errorMessage } = await supabase
             .from('messages')
             .insert({
                 borrow_id: purchaseId,
-                user_id: user?.id,
+                email,
                 message: "Le créneau ne me convient pas, pouvez-vous refaire la demande sur ce créneau SVP: " + slot
             })
     }
@@ -293,13 +303,16 @@ export async function purchaseBook(bookId: number, rdvDate: any, message: string
     console.log('formdata with message ', message)
 
     const supabase = createClient();
-    const { data, error: errConnect } = await supabase.auth.getUser()
-    console.log('borrow book' + bookId + "and user" + data?.user?.id + "and rdv date" + rdvDate + "and first time" + formData.get("firstTime"))
+    const { data: { user } } = await supabase.auth.getUser();
+    const email = user?.user_metadata["email"]
+
+
+    console.log('borrow book' + bookId + "and email" + email + "and rdv date" + rdvDate + "and first time" + formData.get("firstTime"))
 
     const { data: borrow, error } = await supabase
         .from('borrow')
         .insert({
-            borrower_id: data?.user?.id,
+            borrower_id: email,
             book_id: bookId,
             rdv_date: rdvDate,
             rdv_time: formData.get("firstTime")
@@ -313,12 +326,12 @@ export async function purchaseBook(bookId: number, rdvDate: any, message: string
 
     // need to retrieve id
     console.log('new borrow ID=' + JSON.stringify(borrow))
-    console.log('insertign message with borrow_id', borrow[0].id, " user_id ", data?.user?.id, " message ", message)
+    console.log('insertign message with borrow_id', borrow[0].id, " email ", email, " message ", message)
     const { error: errorMessage } = await supabase
         .from('messages')
         .insert({
             borrow_id: borrow[0].id,
-            user_id: data?.user?.id,
+            email,
             message
         })
 
@@ -374,6 +387,8 @@ const setBookToFree = async (bookId: any, supabase: any) => {
 
 export async function search(formData: FormData) {
     const term = formData.get('term')
+    console.log('in server action ', term)
+
     if (typeof term !== 'string' || !term) {
         redirect("/")
     }
@@ -383,12 +398,15 @@ export async function search(formData: FormData) {
 export async function addMessage(borrowId: any, message: string, isPurchase: any) {
     const supabase = createClient();
     const { data, error: errConnect } = await supabase.auth.getUser()
+    const { data: { user } } = await supabase.auth.getUser();
 
+    console.log('user retrieved from oauth', (JSON.stringify(user)))
+    const email = user?.user_metadata["email"]
     const { error: errorMessage } = await supabase
         .from('messages')
         .insert({
             borrow_id: borrowId,
-            user_id: data?.user?.id,
+            email,
             message
         })
 

@@ -7,10 +7,10 @@ export default async function PurchasePage({sale, isPurchase}: {sale: any, isPur
     if(!isPurchase) {
         const { data: buyer } = await supabase
         .from("user")
-        .select("user_name")
-        .eq("user_id", sale.borrower_id)
+        .select("pseudo")
+        .eq("email", sale.borrower_id)
 
-        buyerName=buyer![0].user_name
+        buyerName=buyer![0]
     }
     
     console.log('buyerName', buyerName)

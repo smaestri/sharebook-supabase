@@ -34,20 +34,10 @@ export default async function PurchasePage({searchParams}: any) {
   if(!isPurchase) {
       const { data: buyers } = await supabase
       .from("user")
-      .select("user_name")
-      .eq("user_id", sales[0].borrower_id)
+      .select("pseudo")
+      .eq("email", sales[0].borrower_id)
       buyer=buyers[0]
   }
-
-  console.log('sales', sales[0].id)
-
-  console.log('messages', messages)
-
-
-  console.log('isPurchase', isPurchase)
-
-  console.log('buyerNbuyerame', buyer)
-
   return (
   <div>
     <div className="flex flex-row gap-3">

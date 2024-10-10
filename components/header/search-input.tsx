@@ -6,7 +6,12 @@ import { search } from "@/lib/actions";
 
 export default function SearchInput() {
     const searchParams = useSearchParams();
-    return (<form action={search}>
+
+    const submit = () => {
+        document.forms["term"].submit();
+    }
+
+    return (<form name="term" action={search}>
         <Input
             name="term"
             classNames={{
@@ -17,7 +22,7 @@ export default function SearchInput() {
             }}
             placeholder="Chercher livre (titre, auteur, utilisateur, ...)"
             size="sm"
-            startContent={<SearchIcon size={18} />}
+            startContent={<SearchIcon onClick={submit} size={18} />}
             type="search"
             defaultValue={searchParams.get("term") || ""}
         /></form>)

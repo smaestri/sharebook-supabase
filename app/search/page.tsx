@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
 import { BookWithCategoryAndUser } from "../list-books/list-books";
-import ListBooksForm from "@/components/list-books-form";
+import { createClient } from "@/utils/supabase/server";
+import ListBooksPage from "../list-books/page";
+import BookPage from "@/components/book-page";
+// import ListBooksPage from "@/components/list-books-page";
 
 interface SearchProps {
     searchParams: {
@@ -11,32 +14,33 @@ interface SearchProps {
 export default async function SearchPage({ searchParams }: SearchProps) {
 
     const { term } = searchParams;
+    console.log('search page with term ' + term)
+
     if (!term) {
         redirect('/')
     }
-    // const session = await auth();
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user?.id) {
+      return <div>Please connect</div>
+    }
+    const email = user?.user_metadata["email"]
+    const { data :books, error } = await supabase.from('book').select().textSearch('title', `${term}`)   
 
-    // const books: BookWithCategoryAndUser[] = await db.book.findMany({
-    //     include: {
-    //         category: true,
-    //         user: true
-    //     },
-    //     where: {
-    //         OR: [
-    //             { title: { contains: term } },
-    //             { author: { contains: term } }
-    //         ]
-    //     }
-    // })
-   
-    const books: BookWithCategoryAndUser[] = []
+    console.log('books results ', books)
 
+    if (!books || books.length ===0){
+        return <div>Aucun résultat pour la recherche "{term}"</div>
+    }
 
     return (<>
-        <h1 className="text-2xl">Résultats</h1>
-        <ListBooksForm userId={"123"} books={books} />
-    </>
-    )
+        <div className="flex flex-wrap gap-4 mt-5 mb-5">
+          {books?.map((book: any) => (
+            <BookPage book={book} email={email} />
+          ))}
+        </div>
+      </>
+      )
 
 
 }

@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
     supabase.auth.onAuthStateChange((event, session: any) => {
         if (event == "SIGNED_IN") {
+            console.log('SIGNED_IN', session.user)
             setUserConnected(session.user);
         }
         if (event == "SIGNED_OUT") {

@@ -7,14 +7,14 @@ import { useState } from "react"
 import FormButton from "./form-button"
 import { useFormState } from "react-dom"
 
-const ModalCity = ({ isOpen, onClose }: { isOpen: boolean, onClose: any }) => {
+const ModalCity = ({ name, isOpen, onClose }: { name: string, isOpen: boolean, onClose: any }) => {
   const [loading, setLoading] = useState<boolean>();
   const [cities, setCities] = useState<[string] | []>([]);
   const [selectedCity, setSelectedCity] = useState();
   const [street, setStreet] = useState<any>();
   const [radioSelected, setRadioSelected] = useState<string>("current-city");
   const [formState, action] = useFormState(saveCity.bind(null, street, selectedCity), null)
-
+console.log('test modal')
   console.log('formState', formState)
   if (formState === 'OK') {
     onClose();
@@ -53,8 +53,10 @@ const ModalCity = ({ isOpen, onClose }: { isOpen: boolean, onClose: any }) => {
             <ModalHeader className="flex flex-col gap-1">Indiquer une ville</ModalHeader>
             <ModalBody>
               <p>
-                Merci de renseigner votre adresse précise SVP, qui sera le lieu de la vente avec l'acheteur
+                Merci de renseigner votre pseudo et votre adresse précise SVP, qui sera le lieu de la vente avec l'acheteur
               </p>
+              <Input name="pseudo" placeholder="Pseudo" isRequired value={name}/>
+
               <Input name="cp" placeholder="code postal" onChange={cpChanged} />
 
               {loading && <div>Loading...</div>}

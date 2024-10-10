@@ -15,7 +15,6 @@ export interface Category {
 export interface CreateEditBookFormProps {
   book?: BookWithCategory
   categories: Category[]
-  userId: string
 }
 
 const states = [
@@ -25,7 +24,7 @@ const states = [
   { id: "BAD", label: "Mauvais état" }]
 
 
-export default function CreateEditBookForm({ categories, book, userId }: CreateEditBookFormProps) {
+export default function CreateEditBookForm({ categories, book }: CreateEditBookFormProps) {
   // need to transform ID in string to display Select correctly
   //const categoriesFormatted = categories.map((cat: any) => ({ ...cat, id: cat.id.toString() }))
 

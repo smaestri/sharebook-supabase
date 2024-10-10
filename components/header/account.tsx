@@ -19,7 +19,7 @@ export default function Account({  }: AccountProps) {
 
    const {userConnected, loading} : any = useUserContext();
 
-  // console.log('userConnected in account', userConnected)
+   console.log('userConnected in account', userConnected)
   // console.log('loading in account', loading)
 
   async function signOut() {

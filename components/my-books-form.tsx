@@ -7,14 +7,14 @@ import { useState } from "react";
 import { Button, Link } from "@nextui-org/react";
 import { BOOK_STATUS } from "@/lib/constants";
 
-interface ListBooksFormProps {
+interface MyBooksFormProps {
   books: any
-  userId?: string
+  email?: string
   askCity?: boolean
 
 }
 
-export default function ListBooksForm({ books, userId, askCity }: ListBooksFormProps) {
+export default function MyBooksForm({ books, email, askCity }: MyBooksFormProps) {
 
   const [modalOpen, setModalOpen] = useState(askCity);
 
@@ -42,18 +42,18 @@ export default function ListBooksForm({ books, userId, askCity }: ListBooksFormP
               <p title={userBook.bookInfo.title} className="line-clamp-3 font-sans">{userBook.bookInfo.title} - {userBook.bookInfo.author}</p>
             </div>
           </div>
-          <div>Propriétaire: {userBook.userInfo.user_name}</div>
+          <div>Propriétaire: {userBook.userInfo.pseudo}</div>
           <div>Lieu de retrait: {userBook.userInfo.city} ({userBook.userInfo.cp})</div>
           <div>Etat: {userBook.state}</div>
           <div>Prix: {userBook.price}</div>
           <div className="flex flex-col items-center mt-2">
-            {userId && userBook.userInfo.user_id !== userId &&
+            {email && userBook.userInfo.email !== email &&
               <Link href={`purchases/new?bookId=${userBook.id}`}>
                 <Button>Acheter</Button>
               </Link>}
           </div>
           <div className="">
-            {userId && userBook.userInfo.user_id === userId &&
+            {email && userBook.userInfo.email === email &&
               <div className="flex flex-col items-center gap-2">
                 <div>
                   <DeleteBook userBookId={userBook.id} />
@@ -62,13 +62,11 @@ export default function ListBooksForm({ books, userId, askCity }: ListBooksFormP
             }
           </div>
           <div>
-            {!userId && <div>Connectez-vous pour emprunter!{userId}</div>}
+            {!email && <div>Connectez-vous pour emprunter!{email}</div>}
           </div>
         </div>
       ))}
     </div>
-    <ModalCity isOpen={!!modalOpen} onClose={() => { setModalOpen(false) }} />
-
   </>)
 
 }

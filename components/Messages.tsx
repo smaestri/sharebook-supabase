@@ -8,7 +8,7 @@ const Messages = ({ messages, borrowId, isPurchase }: { messages: any, borrowId:
   const [message, setMessage] = useState<any>();
   let firstUserMessage = ""
   if (messages && messages.length > 0) {
-    firstUserMessage = messages[0].user.user_name
+    firstUserMessage = messages[0].user.pseudo
   }
 
   const renderMessages = () => {
@@ -19,8 +19,8 @@ const Messages = ({ messages, borrowId, isPurchase }: { messages: any, borrowId:
         timeStyle: 'short',
       }).format(when)
       return (<div className="flex flex-col mb-5">
-        <div>{dateStr} par {mess.user.user_name}</div>
-        <div className={`${firstUserMessage == mess.user.user_name ? "bg-amber-100" : "bg-blue-100"} rounded-full`}>
+        <div>{dateStr} par {mess.user.pseudo}</div>
+        <div className={`${firstUserMessage == mess.user.pseudo ? "bg-amber-100" : "bg-blue-100"} rounded-full`}>
           <div className="p-6">
             <div>{mess.message}</div>
           </div>
