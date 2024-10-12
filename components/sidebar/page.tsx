@@ -18,8 +18,6 @@ export default async function SideBarPage({}) {
 
   const { data: categories} = await supabase.rpc('hello_world')
 
-console.log('categories', categories)
-
   // if (!categories) {
   //   return null;
   // }

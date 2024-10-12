@@ -40,6 +40,9 @@ export default function PurchaseClient({ sale, isPurchase, buyer }: { buyer: any
           <div className="mb-3 mt-2">
             <p title={sale.user_book.book.title} className="line-clamp-3 font-sans italic">{sale.user_book.book.title}</p>
           </div>
+          <div className="mb-3 mt-2">
+            <p>{isPurchase ? `Propiétaire: ${sale.user_book.user.pseudo}` : `Demandeur: ${buyer.pseudo}`}</p>
+          </div>
 
         </div>
         <div>

@@ -1,6 +1,6 @@
-import Home from "./main";
+import { redirect } from "next/navigation";
 
 export default async function Homepage() {
-  console.log('HOMEPAGE')
-  return (<Home/>)
+  redirect('/home');
+
 }

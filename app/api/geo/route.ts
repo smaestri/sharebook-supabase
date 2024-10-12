@@ -13,8 +13,6 @@ export async function GET(request: Request) {
             "User-Agent": "axios 0.21.1"
           }
         });
-        console.log('response', response.data)
-
         return Response.json({ cities: response.data })
 
       } catch (error) {

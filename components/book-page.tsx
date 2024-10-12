@@ -1,9 +1,9 @@
 import { BOOK_STATUS } from "@/lib/constants";
 import { createClient } from "@/utils/supabase/server";
 import BookForm from "./book-form";
-const supabase = createClient();
 
 export default async function BookPage({book, email} : any) {
+    const supabase = createClient();
 
 // pour chaque book, regarder le nombre d'utilisateur qui le possedent
 const { data: userBooks } = await supabase

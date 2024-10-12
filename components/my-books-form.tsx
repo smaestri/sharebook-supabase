@@ -1,11 +1,8 @@
 "use client"
 import Image from "next/image"
-import { BorrowBookButton } from "./borrow-book-button";
 import { DeleteBook } from "./delete-book-button";
-import ModalCity from "./ModalCity";
 import { useState } from "react";
 import { Button, Link } from "@nextui-org/react";
-import { BOOK_STATUS } from "@/lib/constants";
 
 interface MyBooksFormProps {
   books: any

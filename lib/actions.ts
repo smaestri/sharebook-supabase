@@ -48,14 +48,14 @@ const saveUser = async (supabase: any, email: string, pseudo: string ) => {
     }
 }
 
-export const saveCity = async (street: any, selectedCity: any, formState: any, formData: any) => {
+export const saveCity = async (email: string, street: any, selectedCity: any, formState: any, formData: any) => {
 
     console.log('save city with city ', selectedCity + " and cp " + formData.get('cp') + ' street', street + " pseudo " + formData.get('pseudo') )
     console.log('')
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
     console.log('user retrieved from oauth', (JSON.stringify(user)))
-    const email = user?.user_metadata["email"]
+    console.log('email', email)
 
     await saveUser(supabase, email, formData.get('pseudo') )
 
@@ -160,6 +160,7 @@ export async function createBook(formState: CreateBookFormState, formData: FormD
     try {
         await saveUser(supabase, email,pseudo)
         const book: BookWithCategory = await saveBook(supabase, formData)
+        //@ts-ignore
         await attachBookToUser(supabase, book.isbn, email, formData.get('state') as string, formData.get('price'))
     } catch (err: unknown) {
         if (err instanceof Error) {
@@ -413,4 +414,9 @@ export async function addMessage(borrowId: any, message: string, isPurchase: any
     const path = `/purchase?id=${borrowId}&isPurchase=${isPurchase}`
     revalidatePath(path)
     redirect(path)
+}
+
+export async function updateAccount(){
+
+    console.log('todo')
 }

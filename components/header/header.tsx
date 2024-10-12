@@ -1,10 +1,15 @@
+"use client"
 import Link from "next/link";
-import { Navbar, NavbarBrand, NavbarContent, Image } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, Image, Button } from "@nextui-org/react";
 import SearchInput from "./search-input";
-import AccountPage from "./account-page";
+import UserMenuPage from "./user-menu-page";
+import { useState } from "react";
+import ModalFriend from "./ModalFriend";
 
 export default function Header() {
   console.log('loading header')
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <Navbar isBordered maxWidth={'full'}>
       <NavbarContent justify="start">
@@ -18,7 +23,7 @@ export default function Header() {
 
       <NavbarContent as="div" className="items-center" justify="end">
         <SearchInput />
-        <AccountPage />
+        <UserMenuPage />
       </NavbarContent>
     </Navbar>
   )

@@ -1,10 +1,8 @@
 "use client"
-
 import { useState } from "react";
 import ModalUser from "./ModalUser";
 import Image from "next/image"
 import { Button } from "@nextui-org/react";
-
 
 export default function BookForm({ book, userBooks, email}: any) {
 

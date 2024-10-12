@@ -8,7 +8,8 @@ export default function SearchInput() {
     const searchParams = useSearchParams();
 
     const submit = () => {
-        document.forms["term"].submit();
+        //@ts-ignore
+        document.forms["term"].submit(); 
     }
 
     return (<form name="term" action={search}>
@@ -20,7 +21,7 @@ export default function SearchInput() {
                 input: "text-small",
                 inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
             }}
-            placeholder="Chercher livre (titre, auteur, utilisateur, ...)"
+            placeholder="Chercher livre (titre)"
             size="sm"
             startContent={<SearchIcon onClick={submit} size={18} />}
             type="search"

@@ -17,5 +17,4 @@ values
   ('Cuisine et vins'),
   ('Histoire'),
   ('Sports'),
-  ('Arts et photographie'),
-  ('Informatique');
+  ('Arts et photographie');

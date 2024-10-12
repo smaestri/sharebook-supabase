@@ -1,9 +1,6 @@
 import { redirect } from "next/navigation";
-import { BookWithCategoryAndUser } from "../list-books/list-books";
 import { createClient } from "@/utils/supabase/server";
-import ListBooksPage from "../list-books/page";
 import BookPage from "@/components/book-page";
-// import ListBooksPage from "@/components/list-books-page";
 
 interface SearchProps {
     searchParams: {
