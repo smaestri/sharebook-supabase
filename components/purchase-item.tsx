@@ -15,6 +15,6 @@ export default async function PurchasePage({sale, isPurchase}: {sale: any, isPur
     
     console.log('buyerName', buyerName)
 
-    return(<PurchaseClient sale={sale} isPurchase={isPurchase} buyer={buyerName} />)
+    return(<PurchaseClient sale={sale} isPurchase={isPurchase} buyer={buyerName} isItem={true} />)
     
 }

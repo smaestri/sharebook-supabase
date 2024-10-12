@@ -66,9 +66,9 @@ export default function CreateEditBookForm({ categories, book }: CreateEditBookF
 
   }
 
-  const togglePrice = (event: any)=> {
+  const togglePrice = (event: any) => {
     console.log(event.target.value)
-    if(event.target.value === "sell") {
+    if (event.target.value === "sell") {
       setShowPrice(true)
       return
     }
@@ -78,38 +78,40 @@ export default function CreateEditBookForm({ categories, book }: CreateEditBookF
   console.log('show proce', showPrice)
   const renderBookForm = () => {
 
-    return (<form action={action}>
-      <Input name="isbn" placeholder="isbn" onChange={onIsbnChanged} value={fetchedBook?.isbn} />
-      <input name="title" type="hidden" value={fetchedBook?.title}></input>
-      <input name="author" type="hidden" value={fetchedBook?.author}></input>
-      <input name="image" type="hidden" value={fetchedBook?.image}></input>
-      <Select
-        label="Category"
-        defaultSelectedKeys={book?.category.id ? [book.category.id.toString()] : undefined}
-        items={categories} name="category">
-        {(category: any) => (
-          <SelectItem key={category.id} value={category.id} >{category.name}</SelectItem>
-        )}
-      </Select>
-      <Select
-        label="Etat"
-        items={states}
-        name="state">
-        {(state: any) => (
-          <SelectItem key={state.id} value={state.id} >{state.label}</SelectItem>
-        )}
-      </Select>
-      <RadioGroup orientation="horizontal" onChange={togglePrice}>
-        <Radio value='sell' >Je le vends</Radio>
-        <Radio value='give' >Je le donne</Radio>
-      </RadioGroup>
-      {showPrice && <span>Prix: <Input name="price" placeholder="prix"/></span>}
-      <FormButton>Save</FormButton>
-      {formState.errors._form ? <div className="p-2 bg-red-200 border border-red-400">{formState.errors._form?.join(', ')}</div> : null}
-    </form>)
+    return (
+        <form action={action}>
+          <Input name="isbn" placeholder="isbn" onChange={onIsbnChanged} value={fetchedBook?.isbn} />
+          <input name="title" type="hidden" value={fetchedBook?.title}></input>
+          <input name="author" type="hidden" value={fetchedBook?.author}></input>
+          <input name="image" type="hidden" value={fetchedBook?.image}></input>
+          <Select
+            label="Category"
+            defaultSelectedKeys={book?.category.id ? [book.category.id.toString()] : undefined}
+            items={categories} name="category">
+            {(category: any) => (
+              <SelectItem key={category.id} value={category.id} >{category.name}</SelectItem>
+            )}
+          </Select>
+          <Select
+            label="Etat"
+            items={states}
+            name="state">
+            {(state: any) => (
+              <SelectItem key={state.id} value={state.id} >{state.label}</SelectItem>
+            )}
+          </Select>
+          <RadioGroup orientation="horizontal" onChange={togglePrice}>
+            <Radio value='sell' >Je le vends</Radio>
+            <Radio value='give' >Je le donne</Radio>
+          </RadioGroup>
+          {showPrice && <span>Prix: <Input name="price" placeholder="prix" /></span>}
+          <FormButton>Save</FormButton>
+          {formState.errors._form ? <div className="p-2 bg-red-200 border border-red-400">{formState.errors._form?.join(', ')}</div> : null}
+        </form>
+     )
   }
   return (
-    <div className="flex fex-row">
+    <div className="flex justify-center gap-4">
       <div className="w-[250px]">
         {renderBookForm()}
       </div>

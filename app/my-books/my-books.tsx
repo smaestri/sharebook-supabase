@@ -24,25 +24,17 @@ export default async function MyBooks() {
   if (error) {
     console.log('error books fetched', error)
   }
-
-  let askCity = false
-  // todo check user only, not user_books in cas no books bu adress filled
-  if (!userBooks || userBooks?.length == 0 || !userBooks[0].user.city || !userBooks[0].user.street) {
-    askCity = true
-  }
-
-  console.log('ask city', askCity)
-
   const finalBooks = userBooks?.map(item => ({ id: item.id, place: item.place, state: item.state, price: item.price, bookInfo: item.book, userInfo: item.user }))
   console.log('books fetched', JSON.stringify(finalBooks))
 
   return (
     <>
-      <h1 className="text-2xl">Mes livres</h1>
-      <MyBooksForm email={email} books={finalBooks} askCity={askCity} />
       <Link href="my-books/new">
         <Button>Créer un livre</Button>
       </Link>
+      <div className="flex justify-center">
+        <MyBooksForm email={email} books={finalBooks} />
+      </div>
     </>
   )
 }

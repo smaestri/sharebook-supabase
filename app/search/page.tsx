@@ -31,7 +31,7 @@ export default async function SearchPage({ searchParams }: SearchProps) {
     }
 
     return (<>
-        <div className="flex flex-wrap gap-4 mt-5 mb-5">
+        <div className="flex flex-wrap gap-2">
           {books?.map((book: any) => (
             <BookPage book={book} email={email} />
           ))}

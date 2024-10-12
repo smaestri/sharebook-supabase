@@ -1,6 +1,8 @@
-import { redirect } from "next/navigation";
+
+import { RedirectToHome } from "./RedirectToHome"
+
 
 export default async function Homepage() {
-  redirect('/home');
-
+  //FIXME for somereason, it was not possible to do redirect in server component (auth info missing if done there)
+  return (<RedirectToHome />)
 }

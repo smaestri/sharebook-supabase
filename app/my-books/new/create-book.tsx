@@ -10,9 +10,7 @@ export default async function CreateBook() {
     return <div>User not found</div>
    }
 
-  return (<>
-  <h1 className="text-2xl">Créer un Livre</h1>
+  return (
     <CreateEditBookForm categories={categories || []} />
-  </>
   )
 }

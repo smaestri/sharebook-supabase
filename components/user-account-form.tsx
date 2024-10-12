@@ -6,6 +6,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import FormButton from "./form-button";
+import { useRouter } from "next/navigation";
 
 export default function UserAccountForm({ email, userInfo, onClose, pseudo }: { email: string, userInfo?: any, onClose?: any, pseudo: string }) {
 
@@ -15,10 +16,14 @@ export default function UserAccountForm({ email, userInfo, onClose, pseudo }: { 
     const [street, setStreet] = useState<any>();
     const [formState, action] = useFormState(saveCity.bind(null, email, street, selectedCity), null)
     const { userConnected }: any = useUserContext();
+    const { push } = useRouter();
 
     if (formState === 'OK') {
         if (onClose) {
             onClose();
+        } else {
+            push('/');
+
         }
     }
 
@@ -60,42 +65,47 @@ export default function UserAccountForm({ email, userInfo, onClose, pseudo }: { 
         }
     }
     return (
-        <div className="flex max-w-96">
-            <div>
-
-            <form action={action}>
-                <p>
+       
+        <form action={action}>
+            <div className="flex justify-center">
+                <div className="flex flex-col gap-2">
+                    <div>
                     Merci de renseigner votre pseudo et votre adresse précise SVP, qui sera le lieu de la vente avec l'acheteur
-                </p>
-                <Input name="pseudo" placeholder="Pseudo" isRequired defaultValue={pseudo} />
-
-                <Input name="cp" placeholder="code postal" onChange={cpChanged} defaultValue={userInfo ? userInfo.cp : null} />
-
-                {loading && <div>Loading...</div>}
-                {!loading && <Select
-                    isRequired
-                    selectionMode="single"
-                    label="Ville"
-                    defaultSelectedKeys={selectedCity ? [selectedCity] : []}
-                    onChange={(ev: any) => setSelectedCity(ev.target.value)}
-                >
-                    {cities.map((city: any) => (
-                        <SelectItem key={city} value={city}>{city}</SelectItem>
-                    ))}
-                </Select>}
-                <div>selected city = {selectedCity}</div>
-                <Textarea
-                    isRequired
-                    label="Numéro et nom de la rue"
-                    onValueChange={setStreet}
-                    defaultValue={userInfo ? userInfo.street : null}
-                    placeholder="Numéro et nom de la rue"
-                />
-                <FormButton>
-                    Valider
-                </FormButton>
-            </form>
+                    </div>
+                    <div>
+                        <Input name="pseudo" placeholder="Pseudo" isRequired defaultValue={pseudo} />
+                    </div>
+                    <div>
+                        <Input name="cp" placeholder="code postal" onChange={cpChanged} defaultValue={userInfo ? userInfo.cp : null} />
+                    </div>
+                    {loading && <div>Loading...</div>}
+                    
+                    {!loading && <div><Select
+                        isRequired
+                        selectionMode="single"
+                        label="Ville"
+                        defaultSelectedKeys={selectedCity ? [selectedCity] : []}
+                        onChange={(ev: any) => setSelectedCity(ev.target.value)}
+                    >
+                        {cities.map((city: any) => (
+                            <SelectItem key={city} value={city}>{city}</SelectItem>
+                        ))}
+                    </Select></div>}
+                    <div><Textarea
+                        isRequired
+                        label="Numéro et nom de la rue"
+                        onValueChange={setStreet}
+                        defaultValue={userInfo ? userInfo.street : null}
+                        placeholder="Numéro et nom de la rue"
+                    /></div>
+                    <div>
+                    <FormButton>
+                        Valider
+                    </FormButton>
+                    </div>
+                </div>
             </div>
-        </div>
+        </form>
+
     )
 }

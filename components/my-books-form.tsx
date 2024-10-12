@@ -1,26 +1,22 @@
 "use client"
 import Image from "next/image"
 import { DeleteBook } from "./delete-book-button";
-import { useState } from "react";
 import { Button, Link } from "@nextui-org/react";
 
 interface MyBooksFormProps {
   books: any
   email?: string
-  askCity?: boolean
-
 }
 
-export default function MyBooksForm({ books, email, askCity }: MyBooksFormProps) {
+export default function MyBooksForm({ books, email }: MyBooksFormProps) {
+console.log(books)
 
-  const [modalOpen, setModalOpen] = useState(askCity);
 
-  // const [modalBorrowOpen, setModalBorrowOpen] = useState(false);
-
-  console.log('books', books)
-  return (<>
-
-    <div className="flex flex-wrap gap-4 mt-5 mb-5">
+if (!books || books.length === 0) {
+  return <div className="flex">Vous n'avez pas déclaré de livres pour le moment.</div>
+}
+  return (
+    <div className="flex flex-wrap gap-2">
       {books?.map((userBook: any) => (
         <div
           key={userBook.bookInfo.id}
@@ -39,11 +35,10 @@ export default function MyBooksForm({ books, email, askCity }: MyBooksFormProps)
               <p title={userBook.bookInfo.title} className="line-clamp-3 font-sans">{userBook.bookInfo.title} - {userBook.bookInfo.author}</p>
             </div>
           </div>
-          <div>Propriétaire: {userBook.userInfo.pseudo}</div>
-          <div>Lieu de retrait: {userBook.userInfo.city} ({userBook.userInfo.cp})</div>
+          <div>Catégorie: {userBook.bookInfo.category.name}</div>
           <div>Etat: {userBook.state}</div>
           <div>Prix: {userBook.price}</div>
-          <div className="flex flex-col items-center mt-2">
+          <div className="flex flex-col items-center">
             {email && userBook.userInfo.email !== email &&
               <Link href={`purchases/new?bookId=${userBook.id}`}>
                 <Button>Acheter</Button>
@@ -64,7 +59,7 @@ export default function MyBooksForm({ books, email, askCity }: MyBooksFormProps)
         </div>
       ))}
     </div>
-  </>)
+  )
 
 }
 

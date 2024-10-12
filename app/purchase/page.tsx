@@ -39,7 +39,7 @@ export default async function PurchasePage({searchParams}: any) {
       buyer=buyers[0]
   }
   return (
-  <div>
+  <div className="flex justify-center">
     <div className="flex flex-row gap-3">
         <div>
           <PurchaseClient sale={sales[0]} isPurchase={isPurchase} buyer={buyer} />

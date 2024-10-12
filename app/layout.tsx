@@ -22,7 +22,6 @@ export default async function RootLayout({
       <body>
         <div>
           <AuthProvider>
-<div>TOTO</div>
               <Header />
               {children}
           </AuthProvider>
